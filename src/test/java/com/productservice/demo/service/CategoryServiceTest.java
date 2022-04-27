@@ -16,12 +16,10 @@ import com.productservice.demo.controller.form.UpdateCategoryForm;
 import com.productservice.demo.domain.Category;
 import com.productservice.demo.repository.spec.CategoryRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-@Slf4j
 public class CategoryServiceTest {
 	
 	@Autowired CategoryService categoryService;
