@@ -1,0 +1,90 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <!-- <div th:replace="fragments/footer :: footer" /></div> -->
+    <style>
+    	.fieldError{
+    		border: 1px solid red;
+    		color: red;
+    	}
+    	.field-error{
+    		color: red;
+    	}
+    </style>
+    
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">		
+    			<div class="grid">
+    			 <p class="grid-header">카테고리 등록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div class="table-responsive">
+						<div>
+							<div>
+								<form th:action th:object="${form}" method="post">
+									<!-- enctype="multipart/form-data" -->
+								<div th:if="${#fields.hasGlobalErrors()}">
+								 	<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+								 </div>	
+									<table class="table table-bordered">
+				            			<tbody>
+				            				<tr>
+				            					<th style="width:20%;">이름</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{name}" type="text" style="width:30%;" th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;"></th>
+				            					<td>
+				            						<button type="submit" onclick="return validate();" style="width:100px;" class="btn btn-dark btn-user btn-block">등록</button>
+				            					</td>
+				            				</tr>
+				            			</tbody>
+				            		</table>
+				            	</form>	
+							</div>
+						</div>
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>
+		  		<a href="javascript:history.back();" style="width:100px;background:#fff;" class="btn btn-user btn-block">뒤로가기</a>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+	
+    <script th:inline="javascript">
+	// 등록 유효성 검사
+	function validate(){
+	 	
+		var name = $("input[name=name]").val();
+		
+		console.log("valid : " + valid);
+		
+		if(valid==false){ // 유효성 검사 실패시
+			alert("필수 항목을 모두 입력하셨는지 확인해주세요.");
+		}
+	}
+    </script>
+</body>
+</html>

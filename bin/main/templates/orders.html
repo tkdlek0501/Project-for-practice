@@ -1,0 +1,112 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <style>
+    	.grid-header{
+    		border-left: 3px solid red;
+    	}
+    </style>
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">
+		 		<div class="grid">
+    			 <p class="grid-header">나의 주문 목록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div class="table-responsive">
+							<table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+			                  <thead>
+			                    <tr>
+			                      <th>식별 번호</th>
+			                      <th>주문 상품</th>
+			                      <th>주문 옵션</th>
+			                      <th>주문 가격</th>
+			                      <th>주문 날짜</th>
+			                      <th>주문 상태</th>
+			                      <th>배송 상태</th>
+			                      <th>상세보기</th>
+			                      <th>주문 취소</th>
+			                    </tr>
+			                  </thead>
+			                  <tbody>
+			                 	 <tr th:each="o : ${orders}">
+			                 	 	<td th:text="${o.id}"></td>
+			                 	 	<td>
+			                 	 		<th:block th:each="op : ${o.orderProduct}">
+			                 				<span th:text="${op.option.productOption.product.name}"></span><br>
+			                 			</th:block>
+			                 	 	</td>
+			                 		<td>
+			                 			<th:block th:each="op : ${o.orderProduct}">
+			                 				<span th:text="|[${op.option.names}]|"></span><br>
+			                 			</th:block>
+			                 		</td>
+			                 		<td th:text="${{o.totalPrice}}"></td>
+			                 		<td th:text="${o.orderDate}"></td>
+			                 		<td th:switch="${{o.status}}">
+			                 			<span th:case="ORDER">주문</span>
+			                 			<span th:case="CANCEL">취소</span>
+			                 		</td>
+			                 		<td th:switch="${{o.delivery.status}}">
+			                 			<span th:case="READY">준비중</span>
+			                 			<span th:case="COM">완료</span>
+			                 		</td>
+			                 		<td>
+			                 			<a class="btn" th:href="|@{/orders/{orderId}(orderId=${o.id})}|">상세</a>
+			                 		</td>
+			                 		<td>
+			                 			<a th:if="${o.status.name() == 'ORDER'}" th:href="|javascript:if(confirm('주문 취소 하시겠습니까?')){cancel(${o.id})}|" class="btn btn-danger">주문 취소</a>
+			                 		</td>
+			                  	 </tr>
+			                  </tbody>
+			                </table>	
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+	 <!-- Bootstrap core JavaScript-->
+  	<script src="../assets/vendors/js/core.js"></script>
+  	<script src="../assets/vendors/datatables/jquery.dataTables.min.js"></script>
+  	<script src="../assets/vendors/datatables/dataTables.bootstrap4.min.js"></script>
+  	<script src="../assets/js/demo/datatables-demo.js"></script>
+    <script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="../assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="../assets/js/charts/chartjs.addon.js"></script>
+    <script src="../assets/js/template.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+    	// 주문 취소 post
+	    function cancel(id) {
+	   	 var form = document.createElement("form");
+	   		 form.setAttribute("method", "post");
+	   		 form.setAttribute("action", "/orders/" + id + "/cancel");
+	   		 document.body.appendChild(form);
+	   		 form.submit();
+	   	 }
+    
+    
+	    $("#dataTable1").DataTable({
+			searching: true,
+			ordering: false
+		});
+    </script>
+</body>
+</html>

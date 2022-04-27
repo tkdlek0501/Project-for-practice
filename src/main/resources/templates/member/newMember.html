@@ -1,0 +1,187 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <!-- <div th:replace="fragments/footer :: footer" /></div> -->
+    <style>
+    	.fieldError{
+    		border: 1px solid red;
+    		color: red;
+    	}
+    	.field-error{
+    		color: red;
+    	}
+    </style>
+    
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">		
+    			<div class="grid">
+    			 <p class="grid-header">회원 등록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div class="table-responsive">
+						<div>
+							<div>
+								<form th:action="@{/admin/members}" th:object="${form}" method="post">
+									<!-- enctype="multipart/form-data" -->
+								<div th:if="${#fields.hasGlobalErrors()}">
+								 	<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+								 </div>	
+									<table class="table table-bordered">
+				            			<tbody>
+				            				<tr>
+				            					<th style="width:20%">아이디</th>
+				            					<td>
+				            						<div class="rows">
+				            							<input th:field="*{username}" type="text" th:class="${#fields.hasErrors('username')}? 'form-control fieldError' : 'form-control'">
+				            							<p th:errors="*{username}">에러 메시지</p>
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%">비밀번호</th>
+				            					<td>
+				            						<div class="rows">
+				            							<input th:field="*{password}" type="password" th:class="${#fields.hasErrors('password')}? 'form-control fieldError' : 'form-control'">
+				            							<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">에러 메시지</p>
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">이름</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{name}" type="text" style="width:30%;" th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">나이</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{age}" type="number" style="width:30%;" th:class="${#fields.hasErrors('age')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('age')}" th:errors="*{age}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">등급</th>
+				            					<td>
+				            						<div class="rows">
+														<select th:field="*{grade}" th:class="${#fields.hasErrors('grade')}? 'form-control fieldError' : 'form-control'">
+															<option value="ADMIN" selected>ADMIN</option>
+															<option value="USER">USER</option>
+														</select>
+														<p th:if="${#fields.hasErrors('grade')}" th:errors="*{grade}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">도시</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{city}" type="text" style="width:30%;" th:class="${#fields.hasErrors('city')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('city')}" th:errors="*{city}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">도로명</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{street}" type="text" style="width:30%;" th:class="${#fields.hasErrors('street')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('street')}" th:errors="*{street}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">우편번호</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{zipcode}" type="text" style="width:30%;" th:class="${#fields.hasErrors('zipcode')}? 'form-control fieldError' : 'form-control'">
+														<p th:if="${#fields.hasErrors('zipcode')}" th:errors="*{zipcode}">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;"></th>
+				            					<td>
+				            						<button type="submit" onclick="return validate();" style="width:100px;" class="btn btn-dark btn-user btn-block">등록</button>
+				            					</td>
+				            				</tr>
+				            			</tbody>
+				            		</table>
+				            	</form>	
+							</div>
+						</div>
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>
+		  		<a href="javascript:history.back();" style="width:100px;background:#fff;" class="btn btn-user btn-block">뒤로가기</a>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+	
+    <script th:inline="javascript">
+	// 등록 유효성 검사
+	function validate(){
+	 	
+		var username = $("input[name=username]").val();
+		var password = $("input[name=password]").val();
+		var name = $("input[name=name]").val();
+		var age = $("input[name=age]").val();
+		var grade = $("select[name=grade]").val();
+		var city = $("input[name=city]").val();
+		var street = $("input[name=street]").val();
+		var zipcode = $("input[name=zipcode]").val();
+		
+		var valid = true;
+		
+		if(username == '' || username == null){
+	          valid = false;
+	    }
+		if(password == '' || password == null){
+	          valid = false;
+	    }
+		if(name == '' || name == null){
+	          valid = false;
+	    }
+		if(grade == '' || grade == null){
+	          valid = false;
+	    }
+		if(city == '' || city == null){
+	          valid = false;
+	    }
+		if(street == '' || street == null){
+	          valid = false;
+	    }
+		if(zipcode == '' || zipcode == null){
+	          valid = false;
+	    }
+		
+		console.log("valid : " + valid);
+		
+		if(valid==false){ // 유효성 검사 실패시
+			alert("필수 항목을 모두 입력하셨는지 확인해주세요.");
+		}
+	}
+    </script>
+</body>
+</html>

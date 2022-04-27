@@ -1,0 +1,63 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">
+		 		<div class="grid">
+    			 <p class="grid-header">카테고리 목록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;" class="btn_zone">
+                      	<a href="/admin/categories/new" class="btn btn-dark">카테고리 등록</a>
+                      </div>
+                      <div class="table-responsive">
+							<table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+			                  <thead>
+			                    <tr>
+			                      <th>식별 번호</th>
+			                      <th>이름</th>
+			                      <th>상세보기</th>
+			                      <!-- <th>삭제하기</th> -->
+			                    </tr>
+			                  </thead>
+			                  <tbody>
+			                 	 <tr th:each="c : ${category}">
+			                 	 	<td th:text="${c.id}"></td>
+			                 		<td th:text="${c.name}"></td>
+			                 		<td>
+			                 			<a class="btn" th:href="|@{/admin/categories/{catId}(catId=${c.id})}|">상세</a>
+			                 		</td>
+			                 		<!-- <td><button class="btn" th:onclick="|if(confirm('영구삭제 하시겠습니까?')){location.href='/admin/categories/${c.id}/remove'}|" type="button">삭제</button></td> -->
+			                  	 </tr>
+			                  </tbody>
+			                </table>	
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+    <script>
+	    $("#dataTable1").DataTable({
+			searching: true,
+			ordering: false
+		});
+    </script>
+</body>
+</html>

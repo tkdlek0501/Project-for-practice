@@ -1,0 +1,103 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">
+		 		<div class="grid">
+    			 <p class="grid-header">주문 목록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div>
+						 <form th:action th:object="${orderSearch}" method="GET" class="form-inline">
+							 <div class="form-group mb-2">
+							 	<input type="text" th:field="*{memberName}" class="form-control" placeholder="회원 이름"/>
+							 	<button type="submit" class="btn btn-primary" style="margin-left:10px;">검색</button>
+							 </div>
+						 </form>
+					 </div>	
+                      <div class="table-responsive">
+							<table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+			                  <thead>
+			                    <tr>
+			                      <th>식별 번호</th>
+			                      <th>주문 상품</th>
+			                      <th>주문 옵션</th>
+			                      <th>주문 가격</th>
+			                      <th>주문 날짜</th>
+			                      <th>주문 상태</th>
+			                      <th>배송 상태</th>
+			                      <th>상세보기</th>
+			                      <th>배송 완료</th>
+			                    </tr>
+			                  </thead>
+			                  <tbody>
+			                 	 <tr th:each="o : ${orders}">
+			                 	 	<td th:text="${o.id}"></td>
+			                 	 	<td>
+			                 	 		<th:block th:each="op : ${o.orderProduct}">
+			                 				<span th:text="${op.option.productOption.product.name}"></span><br>
+			                 			</th:block>
+			                 	 	</td>
+			                 		<td>
+			                 			<th:block th:each="op : ${o.orderProduct}">
+			                 				<span th:text="|[${op.option.names}]|"></span><br>
+			                 			</th:block>
+			                 		</td>
+			                 		<td th:text="${{o.totalPrice}}"></td>
+			                 		<td th:text="${o.orderDate}"></td>
+			                 		<td th:switch="${{o.status}}">
+			                 			<span th:case="ORDER">주문</span>
+			                 			<span th:case="CANCEL">취소</span>
+			                 		</td>
+			                 		<td th:switch="${{o.delivery.status}}">
+			                 			<span th:case="READY">준비중</span>
+			                 			<span th:case="COM">배송 완료</span>
+			                 		</td>
+			                 		<td>
+			                 			<a class="btn" th:href="|@{/admin/orders/{orderId}(orderId=${o.id})}|">상세</a>
+			                 		</td>
+			                 		<td>
+			                 			<a th:if="${o.status.name() != 'CANCEL'} and ${o.delivery.status.name() != 'COM'}" th:href="|javascript:if(confirm('배송 완료 처리 하시겠습니까?')){complete(${o.id})}|" class="btn btn-result">배송 완료</a>
+			                 		</td>
+			                  	 </tr>
+			                  </tbody>
+			                </table>	
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+    <script>
+    	// 배송 완료 post
+    	function complete(id) {
+    		 var form = document.createElement("form");
+	   		 form.setAttribute("method", "post");
+	   		 form.setAttribute("action", "/orders/" + id + "/complete");
+	   		 document.body.appendChild(form);
+	   		 form.submit();
+    	}
+    
+	    $("#dataTable1").DataTable({
+			searching: true,
+			ordering: false
+		});
+    </script>
+</body>
+</html>

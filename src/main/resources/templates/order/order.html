@@ -1,0 +1,91 @@
+	<!-- partial:partials/_header.html -->
+    <th:block th:replace="/../common/header.html"></th:block>
+    <!-- partial -->
+    <div class="page-body">
+      <!-- partial:partials/_sidebar.html -->
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    <!-- partial -->
+    
+    <style>
+    	.fieldError{
+    		border: 1px solid red;
+    		color: red;
+    	}
+    	.field-error{
+    		color: red;
+    	}
+    </style>
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">		
+    			<div class="grid">
+    			 <p class="grid-header">주문 상세</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div class="table-responsive">
+						<div>
+							<div>
+								<table class="table table-bordered">
+			            			<tbody>
+			            				<tr>
+			            					<th style="width:20%;">식별 번호</th>
+			            					<td th:text="${order.id}"></td>
+			            				</tr>
+			            				<tr>
+			            					<th style="width:20%">주문 상품</th>
+			            					<td>
+			            						<div class="rows">
+			            							<th:block th:each="op : ${order.orderProduct}">
+			            								<a th:href="|@{/products/{productId}(productId=${op.option.productOption.product.id})}|" th:text="|${op.option.productOption.product.name} [옵션(${op.option.productOption.optionItems}) : ${op.option.names}] [개수: ${op.count} 개] [개별 가격: ${#numbers.formatInteger(op.price,3,'COMMA')} 원] [총 가격: ${#numbers.formatInteger(op.totalPrice,3,'COMMA')} 원]|"></a>
+			            								<br>
+			            							</th:block>
+			            						</div>
+			            					</td>
+			            				</tr>
+			            				<tr>
+			            					<th style="width:20%">주문 총 가격</th>
+			            					<td th:text="|${#numbers.formatInteger(order.totalPrice,3,'COMMA')} 원|"></td>
+			            				</tr>
+			            				<tr>
+			            					<th style="width:20%;">배송 상태</th>
+			            					<td>
+			            						<th:block th:switch="${{order.delivery.status}}">
+			            								<span th:case="READY">준비중</span>
+			            								<span th:case="COM">배송 완료</span>
+			            						</th:block>
+			            					</td>
+			            				</tr>
+			            				<tr>
+			            					<th style="width:20%">주문 날짜</th>
+			            					<td th:text="${#temporals.format(order.orderDate, 'yyyy.MM.dd HH시 mm분')}"></td>
+			            				</tr>
+			            			</tbody>
+			            		</table>
+							</div>
+						</div>
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>
+		  		<a href="javascript:history.back();" style="width:100px;background:#fff;" class="btn btn-user btn-block">뒤로가기</a>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+    <script th:inline="javascript">
+    </script>
+</body>
+</html>

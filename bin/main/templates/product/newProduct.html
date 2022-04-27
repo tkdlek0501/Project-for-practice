@@ -1,0 +1,143 @@
+    <th:block th:replace="/../common/header.html"></th:block>
+    <div class="page-body">
+    <th:block th:replace="/../common/sidebar.html"></th:block>
+    
+    <!-- <div th:replace="fragments/footer :: footer" /></div> -->
+    <style>
+    	.fieldError{
+    		border: 1px solid red;
+    		color: red;
+    	}
+    	.field-error{
+    		color: red;
+    	}
+    </style>
+    
+    
+    <div class="page-content-wrapper">
+     <div class="page-content-wrapper-inner">
+      <div id="content-viewport"> 
+        <!-- Begin Page Content -->
+        <div class="row">
+		 <div class="col-12">		
+    			<div class="grid">
+    			 <p class="grid-header">상품 등록</p>
+    			  <div class="grid-body">
+                    <div class="item-wrapper">
+                      <div class="table-responsive">
+						<div>
+							<div>
+								<form th:action th:object="${form}" method="post" enctype="multipart/form-data">
+								<div th:if="${#fields.hasGlobalErrors()}">
+								 	<p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+								 </div>	
+									<table class="table table-bordered">
+				            			<tbody>
+				            				<tr>
+				            					<th style="width:20%">카테고리</th>
+				            					<td>
+				            						<div class="rows">
+				            							<select th:field="*{categoryId}" class="form-control">
+				            								<option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+				            							</select>
+				            							<p th:errors="*{categoryId}" class="field-error">에러 메시지</p>
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%">이름</th>
+				            					<td>
+				            						<div class="rows">
+				            							<input th:field="*{name}" type="text" th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
+				            							<p th:errors="*{name}" class="field-error">에러 메시지</p>
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%">가격</th>
+				            					<td>
+				            						<div class="rows">
+				            							<input th:field="*{price}" type="number" th:class="${#fields.hasErrors('price')}? 'form-control fieldError' : 'form-control'">
+				            							<p th:errors="*{price}" class="field-error">에러 메시지</p>
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">이미지</th>
+				            					<td>
+				            						<div class="rows">
+				            							<p>업로드 시 파일 경로는 C:/Download/~ 입니다.</p>
+				            							<input th:field="*{image}" type="file" multiple="multiple">
+				            							<p th:errors="*{image}" class="field-error">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">노출여부</th>
+				            					<td>
+				            						<div class="rows">
+														<select th:field="*{status}" th:class="${#fields.hasErrors('status')}? 'form-control fieldError' : 'form-control'">
+															<option value="SHOW" selected>노출</option>
+															<option value="HIDE">숨김</option>
+														</select>
+														<p th:errors="*{status}" class="field-error">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;">옵션 항목 (쉼표로 구분) ex. 색상,사이즈</th>
+				            					<td>
+				            						<div class="rows">
+														<input th:field="*{optionItems}" type="text" style="width:30%;" th:class="${#fields.hasErrors('optionItems')}? 'form-control fieldError' : 'form-control'">
+														<p th:errors="*{optionItems}" class="field-error">에러 메시지</p>
+													</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%">옵션 이름 (쉼표로 구분) ex. red,XL <br> 옵션별 재고</th>
+				            					<td>
+				            						<div class="rows">
+				            							<p>옵션1</p>
+				            							<input th:field="*{option[0].names}" th:class="${#fields.hasErrors('option')}? 'form-control fieldError' : 'form-control'" type="text" style="width:30%;" placeholder="옵션 이름을 입력해주세요">
+				            							<input th:field="*{option[0].stockQuantity}" th:class="${#fields.hasErrors('option')}? 'form-control fieldError' : 'form-control'" type="number" style="width:30%;" placeholder="옵션 재고를 입력해주세요">
+				            							<p th:errors="*{option}" class="field-error"></p>
+				            							<p>옵션2</p>
+				            							<input th:field="*{option[1].names}" class="form-control" type="text" style="width:30%;" placeholder="옵션 이름을 입력해주세요">
+				            							<input th:field="*{option[1].stockQuantity}" class="form-control" type="number" style="width:30%;" placeholder="옵션 재고를 입력해주세요">
+				            						</div>
+				            					</td>
+				            				</tr>
+				            				<tr>
+				            					<th style="width:20%;"></th>
+				            					<td>
+				            						<button type="submit" style="width:100px;" class="btn btn-dark btn-user btn-block">등록</button>
+				            					</td>
+				            				</tr>
+				            			</tbody>
+				            		</table>
+				            	</form>	
+							</div>
+						</div>
+					  </div>
+					 </div>	
+				   </div>
+		  		</div>
+		  		<a href="/admin/products" style="width:100px;background:#fff;" class="btn btn-user btn-block">뒤로가기</a>	
+         </div>
+          <!-- DataTales Example -->
+        
+       </div>
+      </div>
+      
+      <!-- Footer -->
+           <!-- End of Main Content -->
+      </div>
+      <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+	
+    <script th:inline="javascript">
+	// 등록 유효성 검사
+    </script>
+</body>
+</html>

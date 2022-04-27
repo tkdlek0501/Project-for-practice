@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:with="user = ${#authentication.principal}">
+	<head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+	  <title>포트폴리오</title>
+	  <link rel="stylesheet" href="/../assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
+	  <link  type="text/css" rel="stylesheet" href="/../assets/vendors/css/vendor.addons.css" />
+	  <link rel="stylesheet" href="/../assets/css/shared/style.css">
+	  <link rel="stylesheet" href="/../assets/css/demo_1/style.css">
+	  <link rel="shortcut icon" href="/../asssets/images/favicon.ico" />
+	  <!-- Bootstrap core JavaScript-->
+	  	<script src="/../assets/vendors/js/core.js"></script>
+	  	<script src="/../assets/vendors/datatables/jquery.dataTables.min.js"></script>
+	  	<script src="/../assets/vendors/datatables/dataTables.bootstrap4.min.js"></script>
+	  	<script src="/../assets/js/demo/datatables-demo.js"></script>
+	    <script src="/../assets/vendors/apexcharts/apexcharts.min.js"></script>
+	    <script src="/../assets/vendors/chartjs/Chart.min.js"></script>
+	    <script src="/../assets/js/charts/chartjs.addon.js"></script>
+	    <script src="/../assets/js/template.js"></script>
+	    <script src="/../assets/js/dashboard.js"></script>
+	</head>
+<body class="header-fixed">
+	<nav class="t-header">
+	  <div class="t-header-brand-wrapper">
+	    <a href="/admin/index">
+	      <h3 class="logo" style="width:100%;color:black;">포트폴리오</h3>
+	      <h2 class="logo-mini">포폴</h2>
+	    </a>
+	  </div>
+	  <div class="t-header-content-wrapper">
+	    <div class="t-header-content">
+	      <button class="t-header-toggler t-header-mobile-toggler d-block d-lg-none">
+	        <i class="mdi mdi-menu"></i>
+	      </button>
+	      <ul class="nav ml-auto">
+	      	<li class="nav-item nav-link" style="display:flex;align-items:center;">
+	      		<p th:text="|안녕하세요. ${#authentication.name} 님! :)|"></p>
+	        </li>          
+	        <li style="display:flex;align-items:center;cursor:pointer;" class="nav-item" onclick="location.href='/doLogout'">
+	          <span>로그아웃</span>
+	          <a class="nav-link">
+	            <i class="mdi mdi-logout mdi-1x"></i>
+	          </a>
+	        </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>

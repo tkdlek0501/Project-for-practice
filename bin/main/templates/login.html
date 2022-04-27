@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- th:with=" user = ${#authentication.principal}" -->
+	<head>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+	  <title>포트폴리오</title>
+	  <link rel="stylesheet" href="../assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
+	  <link  type="text/css" rel="stylesheet" href="../assets/vendors/css/vendor.addons.css" />
+	  <link rel="stylesheet" href="../assets/css/shared/style.css">
+	  <link rel="stylesheet" href="../assets/css/demo_1/style.css">
+	  <link rel="shortcut icon" href="../asssets/images/favicon.ico" />
+	  <style>
+    	.btn-block + .btn-block{
+    		margin: 0;
+    	}
+    	.page-body{
+    		grid-template-columns: none;
+    	}
+    	.page-content-wrapper{
+    		margin:0 !important;
+    	}
+    </style>
+	</head>
+<body>
+    <div class="authentication-theme auth-style_1">
+    
+        <div class="row">
+	        <div style="flex:0 0 50%;min-width:300px;max-width:600px;" class="col-lg-3 col-md-7 col-sm-9 col-11 mx-auto">
+	          <div class="grid">
+	            <div class="grid-body">
+	              <div class="row">
+	                <div class="col-lg-7 col-md-8 col-sm-9 col-12 mx-auto form-wrapper">
+	                  <h2 style="text-align:center;">Login</h2>
+						<form action="/doLogin" method="POST">
+							<label for="username">ID</label>
+							<input class="form-control" type="text" name="username">
+							<br>
+							<label for="password">PW</label>
+							<input class="form-control form-control-user" type="password" name="password">
+							<br><br>
+							<div style="display:flex;justify-content:space-between;">
+								<button type="submit" style="margin-right:10px;" class="btn btn-dark btn-user btn-block">로그인</button>
+								<a href="/login/join" class="btn btn-dark btn-user btn-block">회원가입</a>
+							</div>
+							<!--  <div style="display:flex;justify-content:space-between;">
+								 <a href="#" class="btn btn-user btn-block" style="margin-right:10px;margin-top:10px !important;">ID/PW 찾기</a>
+							</div> -->
+							<br>
+						</form>
+	                </div>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+      	</div>
+       
+    </div>
+    
+	 <!-- Bootstrap core JavaScript-->
+  	<script src="../assets/vendors/js/core.js"></script>
+  	<script src="../assets/vendors/datatables/jquery.dataTables.min.js"></script>
+  	<script src="../assets/vendors/datatables/dataTables.bootstrap4.min.js"></script>
+  	<script src="../assets/js/demo/datatables-demo.js"></script>
+    <script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <script src="../assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="../assets/js/charts/chartjs.addon.js"></script>
+    <script src="../assets/js/template.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+    </script>
+</body>
+</html>
