@@ -45,6 +45,9 @@ public class Option {
 	@JoinColumn(name = "product_option_id")
 	private ProductOption productOption;
 	
+	@OneToMany(mappedBy = "option")
+	private List<Cart> cart = new ArrayList<>();
+	
 	// === 생성 메서드
 	public static Option createOption(
 			String names,

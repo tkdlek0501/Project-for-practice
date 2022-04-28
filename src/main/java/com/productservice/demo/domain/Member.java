@@ -62,6 +62,9 @@ public class Member implements UserDetails{
 	@OneToMany(mappedBy = "member")
 	private List<Order> order = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "member")
+	private List<Cart> cart = new ArrayList<>();
+	
 	// === 연관 관계 메서드
 	
 	public void setAddress(Address address) {

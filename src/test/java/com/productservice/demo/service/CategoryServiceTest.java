@@ -1,6 +1,5 @@
 package com.productservice.demo.service;
 
-import javax.persistence.EntityManager;
 
 
 import static org.junit.Assert.*;
@@ -24,7 +23,6 @@ public class CategoryServiceTest {
 	
 	@Autowired CategoryService categoryService;
 	@Autowired CategoryRepository categoryRepository;
-	@Autowired EntityManager em;
 	
 	// 카테고리 등록
 	@Test

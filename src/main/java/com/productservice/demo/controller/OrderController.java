@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
+import com.productservice.demo.controller.form.CreateCartForm;
 import com.productservice.demo.controller.form.CreateOrderForm;
 import com.productservice.demo.domain.Member;
 import com.productservice.demo.domain.Order;
@@ -29,6 +30,7 @@ import com.productservice.demo.domain.Product;
 import com.productservice.demo.domain.ProductImage;
 import com.productservice.demo.dto.OrderSearch;
 import com.productservice.demo.repository.ProductImageRepository;
+import com.productservice.demo.service.CartService;
 import com.productservice.demo.service.OrderService;
 import com.productservice.demo.service.ProductService;
 import com.productservice.demo.util.upload.FileStore;
@@ -45,6 +47,7 @@ public class OrderController {
 	private final FileStore fileStore;
 	private final ProductService productService;
 	private final OrderService orderService;
+	private final CartService cartService;
 	
 	// 주문 가능 상품 리스트
 	@GetMapping("/products")
@@ -61,9 +64,11 @@ public class OrderController {
 			Model model) {
 		
 		CreateOrderForm form = new CreateOrderForm();
+		CreateCartForm cartForm = new CreateCartForm();
 		Product product = productService.findProduct(productId);
 		
 		model.addAttribute("form", form);
+		model.addAttribute("cartForm", cartForm);
 		model.addAttribute("product", product);
 		return "product";
 	}
@@ -159,6 +164,47 @@ public class OrderController {
 		
 		model.addAttribute("order", order);
 		return "order/order";
+	}
+	
+	// 상품(옵션) 장바구니 등록
+	@PostMapping("/products/{productId}/cart")
+	public String addCart(
+			@PathVariable("productId") Long productId,
+			@Validated @ModelAttribute("cartForm") CreateCartForm form,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			Model model,
+			Authentication auth
+			) {
+		
+		if(auth == null) { return "redirect:/doLogout"; }
+		Member member = (Member) auth.getPrincipal();
+		Long memberId = member.getId();
+		form.addMemberId(memberId);
+		
+		CreateOrderForm orderForm = new CreateOrderForm();
+		Product product = productService.findProduct(productId);
+		model.addAttribute("form", orderForm);
+		model.addAttribute("product", product);
+		
+		// 값에 오류
+		if(bindingResult.hasErrors()) {
+			bindingResult.reject(null, "입력받은 값에 오류가 있습니다.");
+			return "product";
+		}
+		
+		// 장바구니 등록
+		Long id = cartService.create(form);
+		
+		// 실패시
+		if(id == null) {
+			bindingResult.reject(null, "장바구니 등록에 실패했습니다.");
+			return "product";
+		}
+		
+		// 성공시
+		redirectAttributes.addAttribute("productId", productId);
+		return "redirect:/products/{productId}";
 	}
 	
 // 관리자	
