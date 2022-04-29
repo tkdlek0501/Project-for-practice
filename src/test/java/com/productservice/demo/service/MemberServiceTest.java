@@ -39,7 +39,7 @@ public class MemberServiceTest {
 	public void join() throws Exception{
 		// given
 		//Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
-		Member member = Member.builder() 
+		Member member = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
 				.name("김현준")
@@ -61,7 +61,7 @@ public class MemberServiceTest {
 	@Test // (expected = IllegalStateException.class)
 	public void validation() throws Exception {
 		// given
-		Member member1 = Member.builder() 
+		Member member1 = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
 				.name("김현준")
@@ -70,7 +70,7 @@ public class MemberServiceTest {
 				.address(address)
 				.build();
 		
-		Member member2 = Member.builder() 
+		Member member2 = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
 				.name("김현준")
@@ -94,7 +94,7 @@ public class MemberServiceTest {
 	public void updateMember() throws Exception{
 		// given
 			// 등록 
-			Member member = Member.builder() 
+			Member member = Member.createBuilder() 
 					.username("HJ")
 					.password("1234")
 					.name("김현준")
@@ -127,7 +127,7 @@ public class MemberServiceTest {
 	public void deleteMember() throws Exception{
 		//given
 			// 등록
-			Member member = Member.builder() 
+			Member member = Member.createBuilder() 
 					.username("HJ")
 					.password("1234")
 					.name("김현준")

@@ -72,7 +72,7 @@ public class OrderServiceTest {
 	
 	private Member createMember(Address address) {
 		//Member member = Member.createMember("test", "123123", "tester", 12, Grade.USER, address);
-		Member member = Member.builder() 
+		Member member = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
 				.name("김현준")

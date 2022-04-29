@@ -20,22 +20,19 @@ import javax.persistence.OneToOne;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.productservice.demo.controller.form.UpdateMemberForm;
-import com.productservice.demo.controller.form.UpdateMemberTestForm;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Builder
 @Getter @Setter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member implements UserDetails{
 	
 	@Id @GeneratedValue
@@ -61,11 +58,9 @@ public class Member implements UserDetails{
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
-	@Builder.Default // 초기화할 필드에 붙임
 	@OneToMany(mappedBy = "member")
 	private List<Order> order = new ArrayList<>();
 	
-	@Builder.Default
 	@OneToMany(mappedBy = "member")
 	private List<Cart> cart = new ArrayList<>();
 	
@@ -81,7 +76,31 @@ public class Member implements UserDetails{
 		order.setMember(this);
 	}
 	
-	// === 생성 메서드
+	// === 생성 builder
+	@Builder(builderClassName = "createBuilder", builderMethodName = "createBuilder")
+	public Member(
+			String username,
+			String password,
+			String name,
+			int age,
+			Grade grade,
+			Address address
+			) {
+		Assert.notNull(username, "username must not be null");
+		Assert.notNull(password, "password must not be null");
+		Assert.notNull(name, "name must not be null");
+		Assert.notNull(age, "age must not be null");
+		Assert.notNull(address, "address must not be null");
+		
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.age = age;
+		this.grade = grade;
+		this.address = address;
+		this.registeredDate = LocalDateTime.now();
+	}
+	
 //	public static Member createMember(
 //			String username, 
 //			String password, 

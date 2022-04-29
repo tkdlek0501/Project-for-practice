@@ -84,7 +84,7 @@ public class CartServiceTest {
 		// 멤버 등록
 		Address address = Address.createAddress("경기", "남로", "12345");
 		//Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
-		Member member = Member.builder() 
+		Member member = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
 				.name("김현준")

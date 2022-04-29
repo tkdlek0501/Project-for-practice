@@ -99,7 +99,7 @@ public class HomeController {
 		
 		Address address = Address.createAddress(form.getCity(), form.getStreet(), form.getZipcode());
 		
-		Member member = Member.builder() // Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);  
+		Member member = Member.createBuilder() // Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);  
 						.username(form.getUsername())
 						.password(form.getPassword())
 						.name(form.getName())
