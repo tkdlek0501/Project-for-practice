@@ -39,7 +39,8 @@ public class CartRepository {
 				.setParameter("memberId", memberId)
 				.getResultList();
 	}
-
+	
+	// 자신의 장바구니 조회
 	public Optional<Cart> myOne(Long id, Long memberId) {
 		List<Cart> cart = em.createQuery("select c from Cart c where c.member.id = :memberId and c.id = :id", Cart.class)
 				.setParameter("memberId", memberId)
@@ -47,6 +48,14 @@ public class CartRepository {
 				.getResultList();
 		
 		return cart.stream().findAny();
+	}
+	
+	// 같은 유저의 같은 옵션으로 된 장바구니 조회
+	public List<Cart> findAllByMemberAndOpt(Long memberId, Long optionId) {
+		return em.createQuery("select c from Cart c where c.member.id = :memberId and c.option.id = :optionId", Cart.class)
+				.setParameter("memberId", memberId)
+				.setParameter("optionId", optionId)
+				.getResultList();
 	}
 	
 }

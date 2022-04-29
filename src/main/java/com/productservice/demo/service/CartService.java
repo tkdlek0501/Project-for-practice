@@ -40,14 +40,21 @@ public class CartService {
 		
 		try {
 			Cart cart = Cart.createCart(form.getPrice(), form.getCount(), member, option);
-			cartRepository.save(cart);
 			
+			// 이미 있는지 검사
+			List<Cart> findCart = cartRepository.findAllByMemberAndOpt(member.getId(), option.getId());
+			if(findCart.size() > 0) throw new IllegalStateException("이미 장바구니에 같은 옵션의 상품이 있습니다. 장바구니에서 수정해주세요.");
+			
+			cartRepository.save(cart);
 			result.put("id", cart.getId());
 		} catch (NotEnoughStockException e) {
 			log.info("장바구니 등록 예외 발생 :", e.getMessage());
 			result.put("error", "NotEnoughStockException");
+		} catch (IllegalStateException e) {
+			log.info("장바구니 등록 예외 발생 :", e.getMessage());
+			result.put("error", "DuplicationException");
 		} catch (Exception e) {
-			log.info("주문 예외 발생");
+			log.info("장바구니 등록 예외 발생");
 			result.put("error", "Exception");
 		}
 		
@@ -82,13 +89,23 @@ public class CartService {
 		// 수정할 내용으로 객체 생성
 		try {
 			Cart cart = Cart.updateCart(form.getPrice(), form.getCount(), option);
+			
+			// 이미 있는지 검사 (옵션을 변경했을 때만)
+			if(!findCart.getOption().getId().equals(option.getId())) {
+				List<Cart> chkCart = cartRepository.findAllByMemberAndOpt(findCart.getMember().getId(), option.getId());
+				if(chkCart.size() > 0) throw new IllegalStateException("이미 장바구니에 같은 옵션의 상품이 있습니다.");
+			}
+			
 			findCart.modify(cart);
 			result.put("id", findCart.getId());
 		} catch (NotEnoughStockException e) {
-			log.info("장바구니 등록 예외 발생 :", e.getMessage());
+			log.info("장바구니 수정 예외 발생 :", e.getMessage());
 			result.put("error", "NotEnoughStockException");
+		} catch (IllegalStateException e) {
+			log.info("장바구니 등록 예외 발생 :", e.getMessage());
+			result.put("error", "DuplicationException");
 		} catch (Exception e) {
-			log.info("주문 예외 발생");
+			log.info("장바구니 수정 예외 발생");
 			result.put("error", "Exception");
 		}
 		

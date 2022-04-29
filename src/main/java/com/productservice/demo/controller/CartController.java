@@ -101,7 +101,9 @@ public class CartController {
 			
 			if(result.get("error") == "NotEnoughStockException") {
 				bindingResult.reject(null, "장바구니에 넣는 개수가 남아있는 재고보다 많습니다.");
-			}else if(result.get("error") == "Exception") {
+			} else if(result.get("error") == "DuplicationException") {
+				bindingResult.reject(null, "이미 장바구니에 같은 옵션의 상품이 등록돼있습니다. 장바구니를 확인해주세요.");
+			} else if(result.get("error") == "Exception") {
 				bindingResult.reject(null, "장바구니 수정에 오류가 있습니다.");
 			}
 			
