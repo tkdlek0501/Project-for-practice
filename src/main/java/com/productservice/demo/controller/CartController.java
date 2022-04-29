@@ -1,6 +1,7 @@
 package com.productservice.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -94,15 +95,21 @@ public class CartController {
 		model.addAttribute("options", options);
 		
 		// 수정
-		Long updateId = cartService.update(form);
-		
-		if(updateId == null) {
-			bindingResult.reject(null, "수정에 실패했습니다.");
+		Map<String,Object> result = cartService.update(form);
+		// 실패시
+		if(result.get("error") != null) {
+			
+			if(result.get("error") == "NotEnoughStockException") {
+				bindingResult.reject(null, "장바구니에 넣는 개수가 남아있는 재고보다 많습니다.");
+			}else if(result.get("error") == "Exception") {
+				bindingResult.reject(null, "장바구니 수정에 오류가 있습니다.");
+			}
+			
 			return "cart/cart";
 		}
 		
 		// 성공
-		redirectAttributes.addAttribute("id", updateId);
+		redirectAttributes.addAttribute("id", result.get("id"));
 		return "redirect:/carts/{id}";
 	}
 	

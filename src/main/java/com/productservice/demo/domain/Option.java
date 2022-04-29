@@ -72,6 +72,15 @@ public class Option {
 		return option;
 	}
 	
+	// 장바구니 추가시 재고 체크 (실제 개수 차감은 주문시)
+	public void checkStock(int count) {
+		int restStock = this.stockQuantity - count;
+		
+		if(restStock < 0) {
+			throw new NotEnoughStockException("장바구니에 넣는 개수가 남아있는 재고보다 많습니다.");
+		}
+	}
+	
 	// 재고 감소
 	public void removeStock(int count) {
 		int restStock = this.stockQuantity - count;
@@ -93,6 +102,8 @@ public class Option {
 		this.setNames(option.getNames());
 		this.setStockQuantity(option.getStockQuantity());
 	}
+	
+	
 	
 	
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -103,7 +104,8 @@ public class CartServiceTest {
 		cartForm.setPrice(10000);
 		
 		// when
-		Long cartId = cartService.create(cartForm); 
+		Map<String,Object> result = cartService.create(cartForm); 
+		Long cartId = (Long) result.get("id");
 		log.info("cartId : {}", cartId);
 		
 		// then
@@ -169,7 +171,8 @@ public class CartServiceTest {
 			cartForm.setCount(1);
 			cartForm.setPrice(10000);
 			
-			Long cartId = cartService.create(cartForm); // 장바구니 등록
+			Map<String,Object> result = cartService.create(cartForm); // 장바구니 등록
+			Long cartId = (Long) result.get("id");
 			
 			// 수정할 값 세팅
 			UpdateCartForm updateForm = new UpdateCartForm();
@@ -179,7 +182,8 @@ public class CartServiceTest {
 			updateForm.setOptionId(options.get(0).getId());
 			
 		// when
-			Long updateId = cartService.update(updateForm);
+			Map<String,Object> updateResult = cartService.update(updateForm);
+			Long updateId = (Long) updateResult.get("id");
 			
 		// then
 			Cart updatedCart = cartService.findOne(updateId);

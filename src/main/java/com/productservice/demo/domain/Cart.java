@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import com.productservice.demo.controller.form.UpdateCartForm;
 
 import lombok.AccessLevel;
@@ -27,10 +29,12 @@ public class Cart {
 	@Column(name = "cart_id")
 	private Long id;
 	
+	@NumberFormat(pattern = "###,###")
 	private int price;
 	
 	private int count;
 	
+	@NumberFormat(pattern = "###,###")
 	private int totalPrice;
 	
 	// 연관 관계 
@@ -56,6 +60,7 @@ public class Cart {
 		cart.setMember(member);
 		cart.setOption(option);
 		
+		option.checkStock(count);
 		return cart;
 	}
 	
@@ -70,6 +75,7 @@ public class Cart {
 		cart.setTotalPrice(price * count);
 		cart.setOption(option);
 		
+		option.checkStock(count);
 		return cart;
 	}
 	

@@ -12,9 +12,6 @@
     			 <p class="grid-header">장바구니 목록</p>
     			  <div class="grid-body">
                     <div class="item-wrapper">
-                      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;" class="btn_zone">
-                      	<a href="/admin/products/new" class="btn btn-dark">상품 등록</a>
-                      </div>
                       <div class="table-responsive">
 							<table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
 			                  <thead>
@@ -36,9 +33,9 @@
 			                 	 	<td th:text="${c.id}"></td>
 			                 	 	<td th:text="${c.option.productOption.product.name}"></td>
 			                 		<td th:text="${c.option.names}"></td>
-			                 		<td th:text="${c.price}"></td>
+			                 		<td th:text="${{c.price}}"></td>
 			                 		<td th:text="${c.count}"></td>
-			                 		<td th:text="${c.totalPrice}"></td>
+			                 		<td th:text="${{c.totalPrice}}"></td>
 			                 		<td><a th:href="|@{/carts/{id} (id=${c.id})}|" class="btn">상세</a></td>
 			                 		<td><button class="btn" th:onclick="|if(confirm('영구삭제 하시겠습니까?')){location.href='/carts/${c.id}/remove'}|" type="button">삭제</button></td>
 			                  	 </tr>

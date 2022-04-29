@@ -1,6 +1,8 @@
 package com.productservice.demo.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +13,7 @@ import com.productservice.demo.controller.form.UpdateCartForm;
 import com.productservice.demo.domain.Cart;
 import com.productservice.demo.domain.Member;
 import com.productservice.demo.domain.Option;
+import com.productservice.demo.exception.NotEnoughStockException;
 import com.productservice.demo.repository.CartRepository;
 import com.productservice.demo.repository.MemberRepository;
 import com.productservice.demo.repository.OptionRepository;
@@ -29,15 +32,26 @@ public class CartService {
 	private final OptionRepository optionRepository;
 	
 	// 등록
-	public Long create(CreateCartForm form) {
+	public Map<String,Object> create(CreateCartForm form) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		Member member = memberRepository.findOne(form.getMemberId());
 		Option option = optionRepository.findOne(form.getOptionId());
 		
-		Cart cart = Cart.createCart(form.getPrice(), form.getCount(), member, option);
-		cartRepository.save(cart);
+		try {
+			Cart cart = Cart.createCart(form.getPrice(), form.getCount(), member, option);
+			cartRepository.save(cart);
+			
+			result.put("id", cart.getId());
+		} catch (NotEnoughStockException e) {
+			log.info("장바구니 등록 예외 발생 :", e.getMessage());
+			result.put("error", "NotEnoughStockException");
+		} catch (Exception e) {
+			log.info("주문 예외 발생");
+			result.put("error", "Exception");
+		}
 		
-		return cart.getId();
+		return result;
 	}
 	
 	// 조회
@@ -56,7 +70,8 @@ public class CartService {
 	}
 	
 	// 수정
-	public Long update(UpdateCartForm form) {
+	public Map<String,Object> update(UpdateCartForm form) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		// 스냅샷
 		Cart findCart = cartRepository.findOne(form.getId());
@@ -65,11 +80,19 @@ public class CartService {
 		Option option = optionRepository.findOne(form.getOptionId());
 		
 		// 수정할 내용으로 객체 생성
-		Cart cart = Cart.updateCart(form.getPrice(), form.getCount(), option);
+		try {
+			Cart cart = Cart.updateCart(form.getPrice(), form.getCount(), option);
+			findCart.modify(cart);
+			result.put("id", findCart.getId());
+		} catch (NotEnoughStockException e) {
+			log.info("장바구니 등록 예외 발생 :", e.getMessage());
+			result.put("error", "NotEnoughStockException");
+		} catch (Exception e) {
+			log.info("주문 예외 발생");
+			result.put("error", "Exception");
+		}
 		
-		findCart.modify(cart);
-		
-		return findCart.getId();
+		return result;
 	}
 	
 	

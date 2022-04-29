@@ -194,11 +194,17 @@ public class OrderController {
 		}
 		
 		// 장바구니 등록
-		Long id = cartService.create(form);
+		Map<String,Object> result = cartService.create(form);
 		
 		// 실패시
-		if(id == null) {
-			bindingResult.reject(null, "장바구니 등록에 실패했습니다.");
+		if(result.get("error") != null) {
+			
+			if(result.get("error") == "NotEnoughStockException") {
+				bindingResult.reject(null, "장바구니에 넣는 개수가 남아있는 재고보다 많습니다.");
+			}else if(result.get("error") == "Exception") {
+				bindingResult.reject(null, "장바구니 등록에 오류가 있습니다.");
+			}
+			
 			return "product";
 		}
 		
