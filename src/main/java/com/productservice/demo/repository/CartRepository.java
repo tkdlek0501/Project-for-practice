@@ -25,12 +25,12 @@ public class CartRepository {
 	}
 	
 	// 조회
-	public Optional<Cart> findOne(Long cartId) {
-		//return em.find(Cart.class, cartId);
-		List<Cart> cart = em.createQuery("select c from Cart c join fetch c.option", Cart.class)
-									.getResultList();
-		return cart.stream().findAny();
-				
+	public Cart findOne(Long cartId) {
+		return em.find(Cart.class, cartId);
+//		List<Cart> cart = em.createQuery("select c from Cart c join fetch c.option where :cartId", Cart.class)
+//									.setParameter("cartId", cartId)
+//									.getResultList();
+//		return cart.stream().findAny();
 	}
 	
 	// 목록
@@ -38,6 +38,15 @@ public class CartRepository {
 		return em.createQuery("select c from Cart c where c.member.id = :memberId", Cart.class)
 				.setParameter("memberId", memberId)
 				.getResultList();
+	}
+
+	public Optional<Cart> myOne(Long id, Long memberId) {
+		List<Cart> cart = em.createQuery("select c from Cart c where c.member.id = :memberId and c.id = :id", Cart.class)
+				.setParameter("memberId", memberId)
+				.setParameter("id", id)
+				.getResultList();
+		
+		return cart.stream().findAny();
 	}
 	
 }

@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.productservice.demo.controller.form.UpdateCartForm;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,5 +58,29 @@ public class Cart {
 		
 		return cart;
 	}
+	
+	public static Cart updateCart(
+			int price,
+			int count,
+			Option option
+			) {
+		Cart cart = new Cart();
+		cart.setPrice(price);
+		cart.setCount(count);
+		cart.setTotalPrice(price * count);
+		cart.setOption(option);
+		
+		return cart;
+	}
+	
+	
+	// 수정
+	public void modify(Cart cart) {
+		this.setPrice(cart.getPrice());
+		this.setCount(cart.getCount());
+		this.setTotalPrice(cart.getTotalPrice());
+		this.setOption(cart.getOption());
+	}
+
 	
 }

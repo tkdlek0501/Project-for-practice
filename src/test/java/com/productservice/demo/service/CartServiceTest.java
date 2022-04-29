@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.productservice.demo.controller.form.CreateCartForm;
 import com.productservice.demo.controller.form.CreateOptionForm;
 import com.productservice.demo.controller.form.CreateProductForm;
+import com.productservice.demo.controller.form.UpdateCartForm;
 import com.productservice.demo.domain.Address;
 import com.productservice.demo.domain.Cart;
 import com.productservice.demo.domain.Category;
@@ -74,7 +75,7 @@ public class CartServiceTest {
 		form.setPrice(10000);
 		form.setStatus("ORDER");
 		
-		Long id = productService.create(form);
+		Long id = productService.create(form); // 옵션 포함 상품 저장
 		Product product = productRepository.findOne(id);
 		
 		Long poId = product.getProductOption().getId();
@@ -83,7 +84,6 @@ public class CartServiceTest {
 		
 		// 멤버 등록
 		Address address = Address.createAddress("경기", "남로", "12345");
-		//Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
 		Member member = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
@@ -113,5 +113,80 @@ public class CartServiceTest {
 		assertEquals(10000, cart.getTotalPrice());
 		assertEquals(options.get(0).getId(), cart.getOption().getId());
 	}
+	
+	// 장바구니 수정
+	@Test
+	public void update() throws Exception{
+		// given
+			// 카테고리 등록
+			Category cat = Category.createCategory("카테고리1"); 
+			Long catId = categoryService.create(cat);
+			// 상품 등록
+			CreateProductForm form = new CreateProductForm();
+			form.setCategoryId(catId);
+			
+			String writerData = "str1,str2,str3,str4";
+			MockMultipartFile mockImage = new MockMultipartFile("image", "test.png", "name.png", writerData.getBytes(StandardCharsets.UTF_8));
+			List<MultipartFile> images = new ArrayList<>();
+			images.add(mockImage);
+			
+			form.setImage(images);
+			form.setName("상품1");
+			form.setOptionItems("옵션명");
+			
+			List<CreateOptionForm> option = new ArrayList<>();
+			CreateOptionForm optionForm = CreateOptionForm.createOptionForm("옵션1", 100);
+			option.add(optionForm);
+			
+			form.setOption(option);
+			form.setPrice(10000);
+			form.setStatus("ORDER");
+			
+			Long id = productService.create(form);
+			Product product = productRepository.findOne(id);
+			
+			Long poId = product.getProductOption().getId();
+			List<Option> options = optionRepository.findAllByPoId(poId);
+			log.info("optionId : {}", options.get(0).getId());
+			
+			// 멤버 등록
+			Address address = Address.createAddress("경기", "남로", "12345");
+			Member member = Member.createBuilder() 
+					.username("HJ")
+					.password("1234")
+					.name("김현준")
+					.age(29)
+					.grade(Grade.ADMIN)
+					.address(address)
+					.build();
+			
+			Long memberId = memberService.join(member);
+			
+			// cart
+			CreateCartForm cartForm = new CreateCartForm();
+			cartForm.setMemberId(memberId);
+			cartForm.setOptionId(options.get(0).getId());
+			cartForm.setCount(1);
+			cartForm.setPrice(10000);
+			
+			Long cartId = cartService.create(cartForm); // 장바구니 등록
+			
+			// 수정할 값 세팅
+			UpdateCartForm updateForm = new UpdateCartForm();
+			updateForm.setId(cartId);
+			updateForm.setPrice(20000);
+			updateForm.setCount(2);
+			updateForm.setOptionId(options.get(0).getId());
+			
+		// when
+			Long updateId = cartService.update(updateForm);
+			
+		// then
+			Cart updatedCart = cartService.findOne(updateId);
+			assertEquals(20000, updatedCart.getPrice());
+			assertEquals(2, updatedCart.getCount());
+			assertEquals(40000, updatedCart.getTotalPrice());
+	}
+	
 	
 }

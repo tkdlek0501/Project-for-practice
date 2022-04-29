@@ -40,5 +40,10 @@ public class OptionRepository {
 				.setParameter("poId", poId)
 				.getResultList();
 	}
+
+	public List<Option> findAll() {
+		return em.createQuery("select o from Option o", Option.class)
+				.getResultList();
+	}
 	
 }

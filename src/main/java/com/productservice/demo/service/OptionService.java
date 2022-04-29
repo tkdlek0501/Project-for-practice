@@ -1,5 +1,7 @@
 package com.productservice.demo.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,11 @@ public class OptionService {
 	public void deleteOne(Long optionId) {
 		Option findOption = optionRepository.findOne(optionId);
 		optionRepository.deleteOne(findOption);
+	}
+	
+	// 옵션 목록
+	public List<Option> findAll() {
+		return optionRepository.findAll();
 	}
 	
 	
