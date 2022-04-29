@@ -13,9 +13,11 @@ import com.productservice.demo.domain.Order;
 import com.productservice.demo.dto.OrderSearch;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class OrderRepository {
 	
 	private final EntityManager em;

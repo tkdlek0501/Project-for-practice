@@ -71,7 +71,16 @@ public class OrderServiceTest {
 	}
 	
 	private Member createMember(Address address) {
-		Member member = Member.createMember("test", "123123", "tester", 12, Grade.USER, address);
+		//Member member = Member.createMember("test", "123123", "tester", 12, Grade.USER, address);
+		Member member = Member.builder() 
+				.username("HJ")
+				.password("1234")
+				.name("김현준")
+				.age(29)
+				.grade(Grade.USER)
+				.address(address)
+				.build();
+		
 		em.persist(member);
 		return member;
 	}

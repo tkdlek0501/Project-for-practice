@@ -47,7 +47,7 @@ public class OrderService {
 		// delivery 생성 - order 와 동시에 생성
 		Delivery delivery = Delivery.createDelivery(form.getZipcode(), form.getCity(), form.getStreet());
 		
-		try {
+//		try {
 			// order 생성
 			int totalPrice = form.getPrice() * form.getCount(); // 해당 주문 총 가격
 			Order order = Order.createOrder(member, delivery, totalPrice);
@@ -61,13 +61,15 @@ public class OrderService {
 			log.info("order 성공 : {}", order.getId());
 			result.put("id", order.getId());
 			return result;
-		} catch (NotEnoughStockException e) {
-			result.put("error", "NotEnoughStock");
-			return result;
-		} catch (Exception e) {
-			result.put("error", "CreateError");
-			return result;
-		} 
+//		} catch (NotEnoughStockException e) {
+//			log.info("주문 예외 발생 : 재고 부족");
+//			result.put("error", "NotEnoughStock");
+//			return result;
+//		} catch (Exception e) {
+//			log.info("주문 예외 발생");
+//			result.put("error", "CreateError");
+//			return result;
+//		} 
 	}
 	
 	// 나의 주문 목록

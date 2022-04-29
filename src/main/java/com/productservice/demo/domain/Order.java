@@ -89,7 +89,6 @@ public class Order {
 		order.setOrderDate(LocalDateTime.now());
 		order.setStatus(OrderStatus.ORDER);
 		
-		
 		order.setMember(member);
 		order.setDelivery(delivery);
 		

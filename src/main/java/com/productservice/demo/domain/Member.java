@@ -26,14 +26,16 @@ import com.productservice.demo.controller.form.UpdateMemberForm;
 import com.productservice.demo.controller.form.UpdateMemberTestForm;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Builder
 @Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member implements UserDetails{
 	
 	@Id @GeneratedValue
@@ -59,9 +61,11 @@ public class Member implements UserDetails{
 	@JoinColumn(name = "address_id")
 	private Address address;
 	
+	@Builder.Default // 초기화할 필드에 붙임
 	@OneToMany(mappedBy = "member")
 	private List<Order> order = new ArrayList<>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "member")
 	private List<Cart> cart = new ArrayList<>();
 	
@@ -78,45 +82,45 @@ public class Member implements UserDetails{
 	}
 	
 	// === 생성 메서드
-	public static Member createMember(
-			String username, 
-			String password, 
-			String name, 
-			int age,
-			Grade grade,
-			Address address
-			) {
-		Member member = new Member();
-		member.setUsername(username);
-		member.setPassword(password);
-		member.setName(name);
-		member.setAge(age);
-		member.setGrade(grade);
-		member.setRegisteredDate(LocalDateTime.now());
-		member.setAddress(address);
-		
-		return member;
-	}
-	
-	// 수정 메서드
-	public static Member updateMember(
-			Long memberId,
-			String username,
-			String password,
-			String name,
-			int age,
-			Address address
-			) {
-		Member member = new Member();
-		member.setId(memberId);
-		member.setUsername(username);
-		member.setPassword(password);
-		member.setName(name);
-		member.setAge(age);
-		member.setAddress(address);
-		
-		return member;
-	}
+//	public static Member createMember(
+//			String username, 
+//			String password, 
+//			String name, 
+//			int age,
+//			Grade grade,
+//			Address address
+//			) {
+//		Member member = new Member();
+//		member.setUsername(username);
+//		member.setPassword(password);
+//		member.setName(name);
+//		member.setAge(age);
+//		member.setGrade(grade);
+//		member.setRegisteredDate(LocalDateTime.now());
+//		member.setAddress(address);
+//		
+//		return member;
+//	}
+//	
+//	// 수정 메서드
+//	public static Member updateMember(
+//			Long memberId,
+//			String username,
+//			String password,
+//			String name,
+//			int age,
+//			Address address
+//			) {
+//		Member member = new Member();
+//		member.setId(memberId);
+//		member.setUsername(username);
+//		member.setPassword(password);
+//		member.setName(name);
+//		member.setAge(age);
+//		member.setAddress(address);
+//		
+//		return member;
+//	}
 	
 	// 수정
 	public Member modify(UpdateMemberForm form) {

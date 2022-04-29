@@ -98,7 +98,16 @@ public class HomeController {
 		Grade grade = Grade.valueOf(form.getGrade());
 		
 		Address address = Address.createAddress(form.getCity(), form.getStreet(), form.getZipcode());
-		Member member = Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);
+		
+		Member member = Member.builder() // Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);  
+						.username(form.getUsername())
+						.password(form.getPassword())
+						.name(form.getName())
+						.age(form.getAge())
+						.grade(grade)
+						.address(address)
+						.build();
+		
 		Long id = memberService.join(member);
 		
 		// 회원 가입 실패시

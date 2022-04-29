@@ -147,7 +147,7 @@ public class ProductService {
 			}
 			
 			// 추가
-			if(!form.getImage().get(0).isEmpty()) {
+			if(form.getImage().size() > 0) {
 				List<ProductImage> productImages = controlImage(form.getImage());
 				
 				for(int i = 0;i<form.getImage().size();i++) {

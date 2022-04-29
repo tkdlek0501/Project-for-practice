@@ -38,7 +38,15 @@ public class MemberServiceTest {
 	@Test
 	public void join() throws Exception{
 		// given
-		Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
+		//Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
+		Member member = Member.builder() 
+				.username("HJ")
+				.password("1234")
+				.name("김현준")
+				.age(29)
+				.grade(Grade.ADMIN)
+				.address(address)
+				.build();
 		
 		// when
 		Long savedId = memberService.join(member);
@@ -53,8 +61,23 @@ public class MemberServiceTest {
 	@Test // (expected = IllegalStateException.class)
 	public void validation() throws Exception {
 		// given
-		Member member1 = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
-		Member member2 = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address2); 
+		Member member1 = Member.builder() 
+				.username("HJ")
+				.password("1234")
+				.name("김현준")
+				.age(29)
+				.grade(Grade.ADMIN)
+				.address(address)
+				.build();
+		
+		Member member2 = Member.builder() 
+				.username("HJ")
+				.password("1234")
+				.name("김현준")
+				.age(29)
+				.grade(Grade.ADMIN)
+				.address(address2)
+				.build();
 		
 		// when
 		memberService.join(member1);
@@ -71,7 +94,15 @@ public class MemberServiceTest {
 	public void updateMember() throws Exception{
 		// given
 			// 등록 
-			Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
+			Member member = Member.builder() 
+					.username("HJ")
+					.password("1234")
+					.name("김현준")
+					.age(29)
+					.grade(Grade.ADMIN)
+					.address(address)
+					.build();
+			
 			Long memberId = memberService.join(member);
 			
 			// 등록한  member 찾아오기 (영속성 컨텍스트 등록)
@@ -96,7 +127,15 @@ public class MemberServiceTest {
 	public void deleteMember() throws Exception{
 		//given
 			// 등록
-			Member member = Member.createMember("HJ", "김현준", "1234", 29, Grade.ADMIN, address);
+			Member member = Member.builder() 
+					.username("HJ")
+					.password("1234")
+					.name("김현준")
+					.age(29)
+					.grade(Grade.ADMIN)
+					.address(address)
+					.build();
+			
 			Long memberId = memberService.join(member);
 			
 			// 등록한 member 찾아오기

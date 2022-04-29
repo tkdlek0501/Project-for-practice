@@ -120,7 +120,7 @@ public class ProductServiceTest {
 		UpdateOptionForm optionForm2 = UpdateOptionForm.createOptionForm(options.get(0).getId(), "옵션2", 200);
 		List<UpdateOptionForm> optionForms = new ArrayList<>();
 		optionForms.add(optionForm2);
-		UpdateProductForm productForm = UpdateProductForm.createUpdateProductForm(id, "상품명2", 20000, "ORDER", null, "옵션명2", optionForms, catId);
+		UpdateProductForm productForm = UpdateProductForm.createUpdateProductForm(id, "상품명2", 20000, "SHOW", null, "옵션명2", optionForms, catId);
 		
 		// when
 		productService.modifyProduct(productForm);
