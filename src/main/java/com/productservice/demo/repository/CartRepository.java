@@ -57,5 +57,9 @@ public class CartRepository {
 				.setParameter("optionId", optionId)
 				.getResultList();
 	}
-	
+
+	// 삭제
+	public void deleteOne(Cart cart) {
+		em.remove(cart);
+	}
 }

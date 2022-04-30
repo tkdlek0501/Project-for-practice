@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.productservice.demo.controller.form.CreateOrderForm;
+import com.productservice.demo.controller.form.CreateOrdersForm;
+import com.productservice.demo.domain.Cart;
 import com.productservice.demo.domain.Delivery;
 import com.productservice.demo.domain.Member;
 import com.productservice.demo.domain.Option;
@@ -16,6 +18,7 @@ import com.productservice.demo.domain.Order;
 import com.productservice.demo.domain.OrderProduct;
 import com.productservice.demo.dto.OrderSearch;
 import com.productservice.demo.exception.NotEnoughStockException;
+import com.productservice.demo.repository.CartRepository;
 import com.productservice.demo.repository.MemberRepository;
 import com.productservice.demo.repository.OptionRepository;
 import com.productservice.demo.repository.OrderProductRepository;
@@ -34,6 +37,7 @@ public class OrderService {
 	private final MemberRepository memberRepository;
 	private final OptionRepository optionRepository;
 	private final OrderProductRepository orderProductRepository;
+	private final CartRepository cartRepository;
 	
 	// 주문 등록
 	@Transactional
@@ -70,6 +74,44 @@ public class OrderService {
 			result.put("error", "CreateError");
 			return result;
 		} 
+	}
+	
+	// 여러개 주문
+	@Transactional
+	public Map<String, Object> multiOrder(CreateOrdersForm form) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		
+		Member member = memberRepository.findOne(form.getMemberId());
+		Delivery delivery = Delivery.createDelivery(form.getZipcode(), form.getCity(), form.getStreet());
+		int totalPrice = 0;
+		for(int i = 0; i < form.getIds().size(); i++) {
+			totalPrice += form.getPrices().get(i) * form.getCounts().get(i); // 해당 주문 총 가격
+		}	
+		
+		try {
+			// order 생성
+			Order order = Order.createOrder(member, delivery, totalPrice);
+			orderRepository.save(order);
+			
+			// orderProduct 생성 ; 이때 재고 감소
+			for(int i = 0; i < form.getIds().size(); i++) {
+				Cart cart = cartRepository.findOne(form.getIds().get(i));
+				Option option = optionRepository.findOne(cart.getOption().getId());
+				OrderProduct orderProduct = OrderProduct.createOrderProduct(option, form.getPrices().get(i), form.getCounts().get(i), order);
+				orderProductRepository.save(orderProduct);
+			}
+			
+			log.info("order 성공");
+			result.put("id", order.getId());
+		} catch (NotEnoughStockException e) {
+			log.info("주문 예외 발생 : 재고 부족");
+			result.put("error", "NotEnoughStock");
+		} catch (Exception e) {
+			log.info("주문 예외 발생");
+			result.put("error", "CreateError");
+		} 
+		
+		return result;
 	}
 	
 	// 나의 주문 목록
@@ -113,6 +155,5 @@ public class OrderService {
 	public Order myOne(Long orderId, Long memberId) {
 		return orderRepository.myOne(orderId, memberId).get();
 	}
-	
 	
 }

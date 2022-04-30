@@ -112,6 +112,13 @@ public class CartService {
 		return result;
 	}
 	
+	// 삭제
+	public void deleteCart(Long id) {
+		Cart cart = cartRepository.findOne(id);
+		
+		cartRepository.deleteOne(cart);
+	}
+	
 	
 	
 }

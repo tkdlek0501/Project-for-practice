@@ -115,4 +115,13 @@ public class CartController {
 		return "redirect:/carts/{id}";
 	}
 	
+	// 삭제
+	@GetMapping("/carts/{id}/remove")
+	public String removeCart(@PathVariable("id") Long id) {
+		
+		cartService.deleteCart(id);
+		
+		return "redirect:/carts";
+	} 
+	
 }

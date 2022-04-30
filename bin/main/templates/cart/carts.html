@@ -16,7 +16,7 @@
 							<table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
 			                  <thead>
 			                    <tr>
-			                      <th>선택</th>
+			                      <th><input type="checkbox" id="cbx_chkAll">전체선택</th>
 			                      <th>식별 번호</th>
 			                      <th>상품 이름</th>
 			                      <th>옵션 이름</th>
@@ -29,7 +29,7 @@
 			                  </thead>
 			                  <tbody>
 			                 	 <tr th:each="c : ${carts}">
-			                 	 	<td><input type="checkbox"></td>
+			                 	 	<td><input type="checkbox" name="chk" th:value="${c.id}"></td>
 			                 	 	<td th:text="${c.id}"></td>
 			                 	 	<td th:text="${c.option.productOption.product.name}"></td>
 			                 		<td th:text="${c.option.names}"></td>
@@ -40,7 +40,8 @@
 			                 		<td><button class="btn" th:onclick="|if(confirm('영구삭제 하시겠습니까?')){location.href='/carts/${c.id}/remove'}|" type="button">삭제</button></td>
 			                  	 </tr>
 			                  </tbody>
-			                </table>	
+			                </table>
+			                <button type="button" class="btn btn-dark" onclick="if(confirm('선택하신 상품을 주문하시겠습니까?')) order();">선택한 상품 주문하기</button>	
 					  </div>
 					 </div>	
 				   </div>
@@ -59,6 +60,36 @@
     <!-- End of Content Wrapper -->
 	
     <script>
+	    $(document).ready(function() {
+	    	// 전체 체크(선택)
+	    	$("#cbx_chkAll").click(function() {
+	    		if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+	    		else $("input[name=chk]").prop("checked", false);
+	    	});
+			
+	    	// 체크
+	    	$("input[name=chk]").click(function() {
+	    		var total = $("input[name=chk]").length;
+	    		var checked = $("input[name=chk]:checked").length;
+	
+	    		if(total != checked) $("#cbx_chkAll").prop("checked", false);
+	    		else $("#cbx_chkAll").prop("checked", true); 
+	    	});
+	    });
+	    
+	 	// 선택 항목 주문하기
+    	function order(){
+    		var chkList = [];
+    		$("input[name=chk]:checked").each(function(i){
+    			chkList.push($('input[name=chk]:checked:eq('+i+')').val());
+    		});
+    		
+    		if(chkList.length < 1) return alert('선택하신 상품이 없습니다.');
+    		
+    		var href = "/orders/multiple?chkList="+ chkList;
+    		location.href = href;
+    	}
+    
 	    $("#dataTable1").DataTable({
 			searching: true,
 			ordering: false

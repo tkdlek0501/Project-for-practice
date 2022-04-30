@@ -2,6 +2,7 @@ package com.productservice.demo.controller;
 
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +19,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 import com.productservice.demo.controller.form.CreateCartForm;
 import com.productservice.demo.controller.form.CreateOrderForm;
+import com.productservice.demo.controller.form.CreateOrdersForm;
+import com.productservice.demo.domain.Cart;
 import com.productservice.demo.domain.Member;
 import com.productservice.demo.domain.Order;
 import com.productservice.demo.domain.Product;
@@ -214,6 +218,77 @@ public class OrderController {
 		redirectAttributes.addAttribute("productId", productId);
 		return "redirect:/products/{productId}";
 	}
+	
+	// 장바구니에서 주문페이지 
+	@GetMapping("/orders/multiple")
+	public String orderMultiplePage(
+			@RequestParam("chkList") List<Long> chkList,
+			Model model
+			) {
+		
+		CreateOrdersForm form = new CreateOrdersForm();
+		
+		List<Cart> carts = new ArrayList<>();
+		for(Long cartId : chkList) {
+			carts.add(cartService.findOne(cartId));
+		}
+		
+		model.addAttribute("form", form);
+		model.addAttribute("carts", carts);
+		return "order/multiOrder";
+	}
+	
+	// 여러개 주문
+	@PostMapping("/orders/multiple")
+	public String orderMultiple(
+			@RequestParam("chkList") List<Long> chkList,
+			@Validated @ModelAttribute("form") CreateOrdersForm form,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			Model model,
+			Authentication auth
+			) {
+		log.info("form : {}", form);
+		
+		// 화면에 기본적으로 있어야 하는 data
+		List<Cart> carts = new ArrayList<>();
+		for(Long cartId : chkList) {
+			carts.add(cartService.findOne(cartId));
+		}
+		model.addAttribute("carts", carts);
+		
+		// validation
+		// 입력 받은 값 오류
+		if(bindingResult.hasErrors()) {
+			bindingResult.reject(null, "입력받은 값에 오류가 있습니다.");
+			return "order/multiOrder";
+		}
+		
+		if(auth == null) { return "redirect:/doLogout"; }
+
+		Member member = (Member) auth.getPrincipal();
+		Long memberId = member.getId();
+		form.addMemberId(memberId);
+		
+		// 주문 등록
+		Map<String, Object> result = orderService.multiOrder(form);
+		
+		if(result.get("error") == "NotEnoughStock") {
+			bindingResult.reject("orderError", null, "주문하려는 상품 재고가 부족합니다.");
+		}else if(result.get("error") == "CreateError") {
+			bindingResult.reject("orderError", null, "주문 등록에 오류가 있습니다.");
+		}
+		
+		// 최종
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("form", form);
+			return "order/multiOrder";
+		}
+		
+		return "redirect:/orders";
+	}
+	
+
 	
 // 관리자	
 	// 주문 목록
