@@ -145,5 +145,9 @@ public class MemberController {
 		
 		memberService.deleteMember(memberId);
 		return "redirect:/admin/members";
-	} 
+	}
+	
+	// 아이디 찾기
+	
+	// 비밀번호 찾기
 }
