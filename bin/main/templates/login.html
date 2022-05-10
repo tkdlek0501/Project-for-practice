@@ -32,7 +32,7 @@
 	              <div class="row">
 	                <div class="col-lg-7 col-md-8 col-sm-9 col-12 mx-auto form-wrapper">
 	                  <h2 style="text-align:center;">Login</h2>
-						<form action="/doLogin" method="POST">
+						<form th:action="|/doLogin|" method="POST">
 							<label for="username">ID</label>
 							<input class="form-control" type="text" name="username">
 							<br>

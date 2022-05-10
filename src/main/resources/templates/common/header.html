@@ -4,7 +4,7 @@
 	th:with="user = ${#authentication.principal}">
 	<head>
 	  <meta charset="utf-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	  <title>포트폴리오</title>
 	  <link rel="stylesheet" href="/../assets/vendors/iconfonts/mdi/css/materialdesignicons.css">
 	  <link  type="text/css" rel="stylesheet" href="/../assets/vendors/css/vendor.addons.css" />
@@ -39,11 +39,14 @@
 	      	<li class="nav-item nav-link" style="display:flex;align-items:center;">
 	      		<p th:text="|안녕하세요. ${#authentication.name} 님! :)|"></p>
 	        </li>          
-	        <li style="display:flex;align-items:center;cursor:pointer;" class="nav-item" onclick="location.href='/doLogout'">
-	          <span>로그아웃</span>
-	          <a class="nav-link">
+	        <li style="display:flex;align-items:center;cursor:pointer;" class="nav-item">
+	        	<!-- onclick="location.href='/doLogout'" -->
+	          <form th:action="|/doLogout|" method="POST">
+	          	<button class="btn"><i class="mdi mdi-logout mdi-1x"></i>로그아웃</button>
+	          </form>
+	          <!-- <a class="nav-link">
 	            <i class="mdi mdi-logout mdi-1x"></i>
-	          </a>
+	          </a> -->
 	        </li>
 	      </ul>
 	    </div>
