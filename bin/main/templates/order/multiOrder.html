@@ -54,7 +54,11 @@
 			                 			<input type="hidden" th:name="counts[__${i.index}__]" th:value="${c.count}">
 			                 			[[${c.count}]]
 			                 		</td>
-			                 		<td th:text="${{c.totalPrice}}"></td>
+			                 		<td class="price" th:text="${{c.totalPrice}}"></td>
+			                  	 </tr>
+			                  	 <tr>
+			                  	 	<td colspan="3" style="text-align:center;">전체 주문 가격</td>
+			                  	 	<td id="totalPrice" colspan="3" style="text-align:center;"></td>
 			                  	 </tr>
 			                  </tbody>
 			                </table>	
@@ -107,6 +111,27 @@
     <!-- End of Content Wrapper -->
 	
     <script>
+    	$(document).ready(function(){
+    		var totalPrice = 0;
+    		
+    		$(".price").each(function(i){
+    			var commaPrice = $('.price:eq('+i+')').text();
+    			var price = commaPrice.replace(",","");
+    			totalPrice += Number(price); 
+    		});
+    		
+    		var resultPrice;
+    		resultPrice = addComma(totalPrice.toString());
+    		
+    		$("#totalPrice").text(resultPrice + "원");
+    		
+    		function addComma(value){
+    	        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	        return value; 
+    	    }
+    	});
+    	
+    	
     </script>
 </body>
 </html>
