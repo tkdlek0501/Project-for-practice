@@ -49,7 +49,12 @@ public class OrderService {
 		Option option = optionRepository.findOne(form.getOptionId());
 		
 		// delivery 생성 - order 와 동시에 생성
-		Delivery delivery = Delivery.createDelivery(form.getZipcode(), form.getCity(), form.getStreet());
+		//Delivery delivery = Delivery.createDelivery(form.getZipcode(), form.getCity(), form.getStreet());
+		Delivery delivery = Delivery.createBuilder()
+				.zipcode(form.getZipcode())
+				.city(form.getCity())
+				.street(form.getStreet())
+				.build();
 		
 		try {
 			// order 생성
@@ -82,7 +87,12 @@ public class OrderService {
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		Member member = memberRepository.findOne(form.getMemberId());
-		Delivery delivery = Delivery.createDelivery(form.getZipcode(), form.getCity(), form.getStreet());
+		Delivery delivery = Delivery.createBuilder()
+				.zipcode(form.getZipcode())
+				.city(form.getCity())
+				.street(form.getStreet())
+				.build();
+		
 		int totalPrice = 0;
 		for(int i = 0; i < form.getIds().size(); i++) {
 			totalPrice += form.getPrices().get(i) * form.getCounts().get(i); // 해당 주문 총 가격

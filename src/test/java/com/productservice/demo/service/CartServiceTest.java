@@ -53,7 +53,10 @@ public class CartServiceTest {
 	public void create() throws Exception{
 		// given
 		// 카테고리 등록
-		Category cat = Category.createCategory("카테고리1"); 
+		Category cat = Category.createBuilder()
+				.name("카테고리1")
+				.build();
+		
 		Long catId = categoryService.create(cat);
 		// 상품 등록
 		CreateProductForm form = new CreateProductForm();
@@ -121,7 +124,9 @@ public class CartServiceTest {
 	public void update() throws Exception{
 		// given
 			// 카테고리 등록
-			Category cat = Category.createCategory("카테고리1"); 
+			Category cat = Category.createBuilder()
+				.name("카테고리1")
+				.build();
 			Long catId = categoryService.create(cat);
 			// 상품 등록
 			CreateProductForm form = new CreateProductForm();

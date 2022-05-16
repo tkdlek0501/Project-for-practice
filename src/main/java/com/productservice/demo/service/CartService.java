@@ -39,7 +39,12 @@ public class CartService {
 		Option option = optionRepository.findOne(form.getOptionId());
 		
 		try {
-			Cart cart = Cart.createCart(form.getPrice(), form.getCount(), member, option);
+			Cart cart = Cart.createBuilder()
+					.price(form.getPrice())
+					.count(form.getCount())
+					.member(member)
+					.option(option)
+					.build();
 			
 			// 이미 있는지 검사
 			List<Cart> findCart = cartRepository.findAllByMemberAndOpt(member.getId(), option.getId());
@@ -88,7 +93,11 @@ public class CartService {
 		
 		// 수정할 내용으로 객체 생성
 		try {
-			Cart cart = Cart.updateCart(form.getPrice(), form.getCount(), option);
+			Cart cart = Cart.modifyBuilder()
+					.price(form.getPrice())
+					.count(form.getCount())
+					.option(option)
+					.build();
 			
 			// 이미 있는지 검사 (옵션을 변경했을 때만)
 			if(!findCart.getOption().getId().equals(option.getId())) {

@@ -28,7 +28,9 @@ public class CategoryServiceTest {
 	@Test
 	public void create() throws Exception{
 		// given
-		Category cat = Category.createCategory("카테고리1"); 
+		Category cat = Category.createBuilder()
+				.name("카테고리1")
+				.build();
 		
 		// when
 		Long savedId = categoryService.create(cat);
@@ -42,8 +44,10 @@ public class CategoryServiceTest {
 	public void update() throws Exception{
 		// given
 		// 생성
-		Category category = Category.createCategory("카테고리1");
-		Long categoryId = categoryService.create(category);
+		Category cat = Category.createBuilder()
+				.name("카테고리1")
+				.build();
+		Long categoryId = categoryService.create(cat);
 		
 		// 수정할 값
 		UpdateCategoryForm form = UpdateCategoryForm.createCategoryForm(categoryId, "카테고리 수정"); 
@@ -64,8 +68,10 @@ public class CategoryServiceTest {
 	public void delete() throws Exception{
 		// given
 		// 등록
-		Category category = Category.createCategory("카테고리 등록");
-		Long categoryId = categoryService.create(category);
+		Category cat = Category.createBuilder()
+				.name("카테고리1")
+				.build();
+		Long categoryId = categoryService.create(cat);
 		
 		// when
 		// 삭제

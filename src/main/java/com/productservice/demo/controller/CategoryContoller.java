@@ -60,7 +60,9 @@ public class CategoryContoller {
 		}
 		
 		// category 생성
-		Category category = Category.createCategory(form.getName());
+		Category category = Category.createBuilder()
+				.name(form.getName())
+				.build();
 		
 		// 등록
 		Long id = categoryService.create(category);

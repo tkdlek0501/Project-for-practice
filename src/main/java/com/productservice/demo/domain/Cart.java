@@ -10,9 +10,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.NumberFormat;
 
-import com.productservice.demo.controller.form.UpdateCartForm;
-
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
 	
@@ -45,47 +43,43 @@ public class Cart {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
-
-	// 생성메서드
-	public static Cart createCart(
+	
+	// === 생성 builder
+	@Builder(builderClassName = "createBuilder", builderMethodName = "createBuilder")
+	public Cart(
 			int price,
 			int count,
 			Member member,
 			Option option
 			) {
-		Cart cart = new Cart();
-		cart.setPrice(price);
-		cart.setCount(count);
-		cart.setTotalPrice(price * count);
-		cart.setMember(member);
-		cart.setOption(option);
+		this.price = price;
+		this.count = count;
+		this.totalPrice = (price*count);
+		this.member = member;
+		this.option = option;
 		
 		option.checkStock(count);
-		return cart;
 	}
 	
-	public static Cart updateCart(
+	@Builder(builderClassName = "modifyBuilder", builderMethodName = "modifyBuilder")
+	public Cart(
 			int price,
 			int count,
 			Option option
 			) {
-		Cart cart = new Cart();
-		cart.setPrice(price);
-		cart.setCount(count);
-		cart.setTotalPrice(price * count);
-		cart.setOption(option);
-		
-		option.checkStock(count);
-		return cart;
+		this.price = price;
+		this.count = count;
+		this.totalPrice = (price * count);
+		this.option = option;
 	}
 	
 	
 	// 수정
 	public void modify(Cart cart) {
-		this.setPrice(cart.getPrice());
-		this.setCount(cart.getCount());
-		this.setTotalPrice(cart.getTotalPrice());
-		this.setOption(cart.getOption());
+		this.price = cart.getPrice();
+		this.count = cart.getCount();
+		this.totalPrice = cart.getTotalPrice();
+		this.option = cart.getOption();
 	}
 
 	

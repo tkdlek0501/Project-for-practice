@@ -112,6 +112,7 @@ public class MemberServiceTest {
 			UpdateMemberForm form = UpdateMemberForm.createMemberForm(memberId, "HJ2", "1234", "김현준2", 27, address2);
 			
 		// when
+			// 수정
 			findMember.modify(form);
 		
 		// then

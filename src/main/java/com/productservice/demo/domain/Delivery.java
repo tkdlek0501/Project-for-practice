@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.springframework.util.Assert;
+
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter @Setter
@@ -38,23 +40,25 @@ public class Delivery {
 	@OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Order order;
 	
-	// 생성 메서드
-	public static Delivery createDelivery(
+	// === 생성 builder
+	@Builder(builderClassName = "createBuilder", builderMethodName = "createBuilder")
+	public Delivery(
 			int zipcode,
 			String city,
 			String street
 			) {
-		Delivery delivery = new Delivery();
-		delivery.setZipcode(zipcode);
-		delivery.setCity(city);
-		delivery.setStreet(street);
-		delivery.setStatus(DeliveryStatus.READY);
+		Assert.notNull(zipcode, "zipcode must not be null");
+		Assert.notNull(city, "city must not be null");
+		Assert.notNull(street, "street must not be null");
 		
-		return delivery;
+		this.zipcode = zipcode;
+		this.city = city;
+		this.street = street;
+		this.status = DeliveryStatus.READY;
 	}
 	
 	// 배송 완료
 	public void complete() {
-		this.setStatus(DeliveryStatus.COM);	
+		this.status = DeliveryStatus.COM;	
 	}
 }
