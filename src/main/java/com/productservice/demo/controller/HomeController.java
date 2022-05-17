@@ -97,7 +97,11 @@ public class HomeController {
 		// converting
 		Grade grade = Grade.valueOf(form.getGrade());
 		
-		Address address = Address.createAddress(form.getCity(), form.getStreet(), form.getZipcode());
+		Address address = Address.createBuilder()
+				.city(form.getCity())
+				.street(form.getStreet())
+				.zipcode(form.getZipcode())
+				.build();
 		
 		Member member = Member.createBuilder() // Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);  
 						.username(form.getUsername())

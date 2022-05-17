@@ -31,8 +31,17 @@ public class MemberServiceTest {
 	@Autowired MemberRepository memberRepository;
 	@Autowired EntityManager em;
 	
-	Address address = Address.createAddress("경기", "남로", "12345");
-	Address address2 = Address.createAddress("경기", "남로", "67890");
+	Address address = Address.createBuilder()
+			.city("경기")
+			.street("남로")
+			.zipcode("12345")
+			.build();
+	
+	Address address2 = Address.createBuilder()
+			.city("경기")
+			.street("남로")
+			.zipcode("67890")
+			.build();
 	
 	// 회원 가입
 	@Test

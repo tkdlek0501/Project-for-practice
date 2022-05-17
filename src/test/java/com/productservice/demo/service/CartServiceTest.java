@@ -87,7 +87,12 @@ public class CartServiceTest {
 		log.info("optionId : {}", options.get(0).getId());
 		
 		// 멤버 등록
-		Address address = Address.createAddress("경기", "남로", "12345");
+		Address address = Address.createBuilder()
+				.city("경기")
+				.street("남로")
+				.zipcode("12345")
+				.build();
+		
 		Member member = Member.createBuilder() 
 				.username("HJ")
 				.password("1234")
@@ -157,7 +162,12 @@ public class CartServiceTest {
 			log.info("optionId : {}", options.get(0).getId());
 			
 			// 멤버 등록
-			Address address = Address.createAddress("경기", "남로", "12345");
+			Address address = Address.createBuilder()
+					.city("경기")
+					.street("남로")
+					.zipcode("12345")
+					.build();
+			
 			Member member = Member.createBuilder() 
 					.username("HJ")
 					.password("1234")

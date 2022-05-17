@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 import com.productservice.demo.controller.form.UpdateMemberTestForm;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,27 +35,39 @@ public class Address {
 	@OneToOne(mappedBy="address", fetch = FetchType.LAZY)
 	private Member member;
 	
-	// === 생성 메서드
-	public static Address createAddress(
+	// === 생성 builder
+	@Builder(builderClassName = "createBuilder", builderMethodName = "createBuilder")
+	public Address(
 			String city,
 			String street,
 			String zipcode
 			) {
-		Address address = new Address();
-		address.setCity(city);
-		address.setStreet(street);
-		address.setZipcode(zipcode);
-		
-		return address;
+		this.city = city;
+		this.street = street;
+		this.zipcode = zipcode;
 	}
+	
+	// === 생성 메서드
+//	public static Address createAddress(
+//			String city,
+//			String street,
+//			String zipcode
+//			) {
+//		Address address = new Address();
+//		address.setCity(city);
+//		address.setStreet(street);
+//		address.setZipcode(zipcode);
+//		
+//		return address;
+//	}
 
-	public Address modify(UpdateMemberTestForm form) {
-		Address address = new Address();
-		address.setCity(form.getAddress().getCity());
-		address.setStreet(form.getAddress().getStreet());
-		address.setZipcode(form.getAddress().getZipcode());
-		
-		return address;
-	}
+//	public Address modify(UpdateMemberTestForm form) {
+//		Address address = new Address();
+//		address.setCity(form.getAddress().getCity());
+//		address.setStreet(form.getAddress().getStreet());
+//		address.setZipcode(form.getAddress().getZipcode());
+//		
+//		return address;
+//	}
 
 }

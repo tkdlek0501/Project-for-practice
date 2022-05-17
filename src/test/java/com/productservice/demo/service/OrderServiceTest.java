@@ -65,7 +65,12 @@ public class OrderServiceTest {
 	}
 	
 	private Address createAddress() {
-		Address address = Address.createAddress("city", "street", "zipcode");
+		Address address = Address.createBuilder()
+				.city("city")
+				.street("street")
+				.zipcode("zipcode")
+				.build();
+		
 		em.persist(address);
 		return address;
 	}

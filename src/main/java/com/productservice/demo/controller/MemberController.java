@@ -66,8 +66,11 @@ public class MemberController {
 		// converting
 		Grade grade = Grade.valueOf(form.getGrade());
 		
-		Address address = Address.createAddress(form.getCity(), form.getStreet(), form.getZipcode());
-		// Member member = Member.createMember(form.getUsername(), form.getPassword(), form.getName(), form.getAge(), grade, address);
+		Address address = Address.createBuilder()
+				.city(form.getCity())
+				.street(form.getStreet())
+				.zipcode(form.getZipcode())
+				.build();
 		Member member = Member.createBuilder() 
 						.username(form.getUsername())
 						.password(form.getPassword())
