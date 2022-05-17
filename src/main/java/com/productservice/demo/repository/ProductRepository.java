@@ -44,7 +44,7 @@ public class ProductRepository {
 	
 	// 노출 상태 상품 목록
 	public List<Product> findShowAll() {
-		return em.createQuery("select p from Product p where p.status = :status", Product.class)
+		return em.createQuery("select p from Product p join fetch p.category join fetch p.productOption where p.status = :status", Product.class)
 				.setParameter("status", ProductStatus.SHOW)
 				.getResultList();
 	}
