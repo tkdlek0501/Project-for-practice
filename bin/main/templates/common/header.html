@@ -38,15 +38,14 @@
 	      <ul class="nav ml-auto">
 	      	<li class="nav-item nav-link" style="display:flex;align-items:center;">
 	      		<p th:text="|안녕하세요. ${#authentication.name} 님! :)|"></p>
+	      		<!-- <p th:text="|${user.name}|"></p>
+	      		<p th:text="|${user.id}|"></p>
+	      		<p th:text="|${user.grade}|"></p> -->
 	        </li>          
 	        <li style="display:flex;align-items:center;cursor:pointer;" class="nav-item">
-	        	<!-- onclick="location.href='/doLogout'" -->
 	          <form th:action="|/doLogout|" method="POST">
 	          	<button class="btn"><i class="mdi mdi-logout mdi-1x"></i>로그아웃</button>
 	          </form>
-	          <!-- <a class="nav-link">
-	            <i class="mdi mdi-logout mdi-1x"></i>
-	          </a> -->
 	        </li>
 	      </ul>
 	    </div>
