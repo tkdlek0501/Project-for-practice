@@ -49,5 +49,14 @@ public class FirstCategoryRepository implements CategoryRepository {
 		em.remove(findCat);
 	}
 	
+	// TODO: jpql left join 사용 예시
+	// + DTO 로 꺼내오는 방법까지
+//	em.createQuery("SELECT new com.example.demo.dto.BoardListResponse(b.id, b.boardTitle, b.boardContent, b.createDate, b.updateDate, b.deleteDate, u.nickname, u.accountType, COUNT(l.id))"
+//			+ " FROM Board b"
+//			+ " LEFT JOIN b.user u"
+//			+ " LEFT JOIN b.likes l"
+//			+ " GROUP BY b.id", 
+//			BoardListResponse.class)
+//			.getResultList();
 	
 }

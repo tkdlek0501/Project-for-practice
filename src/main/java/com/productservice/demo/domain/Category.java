@@ -42,16 +42,6 @@ public class Category {
 		Assert.notNull(name, "카테고리 등록시 이름은 필수 입력 해야합니다.");
 	}
 	
-	// 생성 메서드
-//	public static Category createCategory(
-//			String name
-//			) {
-//		Category category = new Category();
-//		category.setName(name);
-//		
-//		return category;
-//	}
-	
 	// 수정
 	public Category modify(UpdateCategoryForm form) {
 		
